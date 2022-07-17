@@ -26,22 +26,23 @@ export default function App() {
     setPage(page);
   };
 
-  const getImagesHits = ({ total, hits }) => {
-    if (total === 0) {
-      setStatus('rejected');
-    } else {
-      setTotal(total);
-      setImages(page === 1 ? [...hits] : [...images, ...hits]);
-      setStatus('resolved');
-    }
-  };
-
   useEffect(() => {
     if (query === '') {
       return;
     }
+    setStatus('pending');
+    const getImagesHits = ({ total, hits }) => {
+      if (total === 0) {
+        setStatus('rejected');
+      } else {
+        setTotal(total);
+        setImages(prevImages =>
+          page === 1 ? [...hits] : [...prevImages, ...hits]
+        );
+        setStatus('resolved');
+      }
+    };
 
-    setStatus('rejected');
     getImages(query, page, getImagesHits, hendleError);
   }, [query, page]);
 
@@ -50,9 +51,6 @@ export default function App() {
     toggleModal();
   };
 
-  const hendlePage = () => {
-    setPage(page => page + 1);
-  };
   const hendleError = ({ message }) => {
     setError(message);
     setStatus('rejected');
@@ -68,12 +66,13 @@ export default function App() {
           images={images}
           getItem={getImg}
           status={status}
+          page={page}
           total={total}
         />
       )}
 
       {status === 'resolved' && total / 20 > 1 && Math.ceil(total / 20) > page && (
-        <BtnLoadMore type="button" onClick={hendlePage}>
+        <BtnLoadMore type="button" onClick={() => setPage(page => page + 1)}>
           Load More
         </BtnLoadMore>
       )}

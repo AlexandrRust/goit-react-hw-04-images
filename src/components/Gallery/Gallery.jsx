@@ -1,8 +1,10 @@
 import { GalleryList, GalleryItem, GalleryImg } from './Gallery.styled';
 import { BoxStatus } from 'components/BoxStatus/BoxStatus.syled';
 import { BallTriangle } from 'react-loader-spinner';
+import Notiflix from 'notiflix';
+import image from '../../images/no-image.jpg';
 
-export const Gallery = ({ images, getItem, status, total }) => {
+export const Gallery = ({ images, getItem, status, page, total }) => {
   switch (status) {
     case 'idle':
       return <BoxStatus>Введите Имя картинки!!</BoxStatus>;
@@ -13,11 +15,16 @@ export const Gallery = ({ images, getItem, status, total }) => {
         </BoxStatus>
       );
     case 'rejected':
-      return <BoxStatus>Картинок с таким именем нет!!!</BoxStatus>;
+      return (
+        <>
+          {Notiflix.Notify.failure('Картинок с таким именем нет!!!')}
+          <img src={image} alt="" />
+        </>
+      );
     case 'resolved':
       return (
         <>
-          <BoxStatus>Найдено {total} картинок!!!</BoxStatus>;
+          {page === 1 && Notiflix.Notify.info(`Найдено ${total} картинок!!!`)}
           <GalleryList className="gallery">
             {images.map(element => (
               <GalleryItem className="gallery-item" key={element.id}>
@@ -37,25 +44,3 @@ export const Gallery = ({ images, getItem, status, total }) => {
       return;
   }
 };
-// if (status === 'idle') {
-//   return <BoxStatus>Введите Имя картинки!!</BoxStatus>;
-// } else if (status === 'rejected') {
-//   return <BoxStatus>Картинок с таким именем нет!!!</BoxStatus>;
-// } else if (status === 'resolved') {
-//   return (
-//     <>
-//       <GalleryList className="gallery">
-//         {images.map(element => (
-//           <GalleryItem className="gallery-item" key={element.id}>
-//             <GalleryImg
-//               id={element.id}
-//               src={element.previewURL}
-//               alt={element.tags}
-//               data-source={element.largeImageURL}
-//               onClick={() => getItem(element.id)}
-//             />
-//           </GalleryItem>
-//         ))}
-//       </GalleryList>
-//     </>
-//   );
