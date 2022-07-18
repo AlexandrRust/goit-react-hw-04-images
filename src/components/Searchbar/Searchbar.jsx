@@ -4,7 +4,7 @@ import {
   SearchForm,
   SearchFormInput,
 } from './Searchbar.styled';
-import { SearchFormButton } from 'components/SearchFormButton/SearchFormButton';
+import { SearchButton } from 'components/SearchButton/SearchButton';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
@@ -29,7 +29,7 @@ export const Searchbar = ({ onSubmit }) => {
         onSubmit={handleSubmit}
       >
         <SearchForm className="form">
-          <SearchFormButton type="submit" className="button" />
+          <SearchButton type="submit" className="button" />
           <SearchFormInput
             className="input"
             name="query"

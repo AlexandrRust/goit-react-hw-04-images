@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const SearchButton = styled.button`
+export const StyledSearchButton = styled.button`
   display: inline-block;
   width: 48px;
   height: 48px;

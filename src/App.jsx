@@ -1,10 +1,11 @@
+import { statusData } from 'const/statusData';
 import { useState, useEffect } from 'react';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { Container } from 'components/Container/Container.styled';
 import { Gallery } from 'components/Gallery/Gallery';
 import { Modal } from 'components/Modal/Modal';
 import { BtnLoadMore } from 'components/BtnLoadMore/BtnLoadMore.styled';
-import { getImages } from 'components/services/img-api';
+import { getImages } from 'services/img-api';
 import { BoxStatus } from 'components/BoxStatus/BoxStatus.syled';
 
 export default function App() {
@@ -14,7 +15,7 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [image, setImage] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState('idle');
+  const [status, setStatus] = useState(statusData.idle);
   const [error, setError] = useState('');
 
   const toggleModal = () => {
@@ -30,16 +31,17 @@ export default function App() {
     if (query === '') {
       return;
     }
-    setStatus('pending');
+    setStatus(statusData.pending);
     const getImagesHits = ({ total, hits }) => {
       if (total === 0) {
-        setStatus('rejected');
+        setStatus(statusData.rejected);
       } else {
+        setError('');
         setTotal(total);
         setImages(prevImages =>
           page === 1 ? [...hits] : [...prevImages, ...hits]
         );
-        setStatus('resolved');
+        setStatus(statusData.resolved);
       }
     };
 
@@ -53,7 +55,7 @@ export default function App() {
 
   const hendleError = ({ message }) => {
     setError(message);
-    setStatus('rejected');
+    setStatus(statusData.rejected);
   };
 
   return (
@@ -71,7 +73,7 @@ export default function App() {
         />
       )}
 
-      {status === 'resolved' && total / 20 > 1 && Math.ceil(total / 20) > page && (
+      {status === statusData.resolved && Math.ceil(total / 20) > page && (
         <BtnLoadMore type="button" onClick={() => setPage(page => page + 1)}>
           Load More
         </BtnLoadMore>

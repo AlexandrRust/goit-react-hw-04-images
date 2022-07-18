@@ -1,7 +1,6 @@
 import { GalleryList, GalleryItem, GalleryImg } from './Gallery.styled';
 import { BoxStatus } from 'components/BoxStatus/BoxStatus.syled';
 import { BallTriangle } from 'react-loader-spinner';
-import Notiflix from 'notiflix';
 import image from '../../images/no-image.jpg';
 
 export const Gallery = ({ images, getItem, status, page, total }) => {
@@ -17,14 +16,16 @@ export const Gallery = ({ images, getItem, status, page, total }) => {
     case 'rejected':
       return (
         <>
-          {Notiflix.Notify.failure('Картинок с таким именем нет!!!')}
-          <img src={image} alt="" />
+          <BoxStatus>Картинок с таким именем нет!!!</BoxStatus>
+          <BoxStatus>
+            <img src={image} alt="no images" />
+          </BoxStatus>
         </>
       );
     case 'resolved':
       return (
         <>
-          {page === 1 && Notiflix.Notify.info(`Найдено ${total} картинок!!!`)}
+          <BoxStatus>Найдено {total} картинок!!!</BoxStatus>
           <GalleryList className="gallery">
             {images.map(element => (
               <GalleryItem className="gallery-item" key={element.id}>
