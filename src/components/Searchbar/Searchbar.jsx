@@ -7,15 +7,14 @@ import {
 import { SearchButton } from 'components/SearchButton/SearchButton';
 import * as yup from 'yup';
 
-const schema = yup.object().shape({
-  query: yup.string().min(3).required(),
-});
-
-const initial = {
-  query: '',
-};
+// const initial = {
+//   query: '',
+// };
 
 export const Searchbar = ({ onSubmit }) => {
+  const schema = yup.object().shape({
+    query: yup.string().min(3).required(),
+  });
   const handleSubmit = (values, { resetForm }) => {
     const { query } = values;
     onSubmit({ query, page: 1 });
@@ -24,7 +23,7 @@ export const Searchbar = ({ onSubmit }) => {
   return (
     <SearchBarHeader className="searchbar">
       <Formik
-        initialValues={initial}
+        initialValues={{ query: '' }}
         validationSchema={schema}
         onSubmit={handleSubmit}
       >

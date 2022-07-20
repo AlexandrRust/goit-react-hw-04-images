@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_URL, API_KEY } from 'const/api_options';
+import { API_URL, API_KEY } from 'constans/api_options';
 
 export async function getImages(query, page, getImagesHits, hendleError) {
   axios.defaults.baseURL = `${API_URL}`;

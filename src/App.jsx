@@ -1,4 +1,4 @@
-import { statusData } from 'const/statusData';
+import { status } from 'constans/status';
 import { useState, useEffect } from 'react';
 import { Searchbar } from 'components/Searchbar/Searchbar';
 import { Container } from 'components/Container/Container.styled';
@@ -15,7 +15,7 @@ export default function App() {
   const [images, setImages] = useState([]);
   const [image, setImage] = useState({});
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState(statusData.idle);
+  const [currentStatus, setStatus] = useState(status.Idle);
   const [error, setError] = useState('');
 
   const toggleModal = () => {
@@ -31,17 +31,17 @@ export default function App() {
     if (query === '') {
       return;
     }
-    setStatus(statusData.pending);
+    setStatus(status.Pending);
     const getImagesHits = ({ total, hits }) => {
       if (total === 0) {
-        setStatus(statusData.rejected);
+        setStatus(status.Rejected);
       } else {
         setError('');
         setTotal(total);
         setImages(prevImages =>
           page === 1 ? [...hits] : [...prevImages, ...hits]
         );
-        setStatus(statusData.resolved);
+        setStatus(status.Resolved);
       }
     };
 
@@ -55,7 +55,7 @@ export default function App() {
 
   const hendleError = ({ message }) => {
     setError(message);
-    setStatus(statusData.rejected);
+    setStatus(status.Rejected);
   };
 
   return (
@@ -67,13 +67,13 @@ export default function App() {
         <Gallery
           images={images}
           getItem={getImg}
-          status={status}
+          status={currentStatus}
           page={page}
           total={total}
         />
       )}
 
-      {status === statusData.resolved && Math.ceil(total / 20) > page && (
+      {currentStatus === status.Resolved && Math.ceil(total / 20) > page && (
         <BtnLoadMore type="button" onClick={() => setPage(page => page + 1)}>
           Load More
         </BtnLoadMore>
